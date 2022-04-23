@@ -4,11 +4,9 @@ import {
   Flex,
   Heading,
   Select,
-  Button,
   Stack,
   Avatar,
   CircularProgress,
-  Circle,
   CircularProgressLabel,
 } from "@chakra-ui/react";
 import useFetch from "../hooks/useFetch";
@@ -36,9 +34,9 @@ function MentalHealthScoreCard() {
       return "green.500";
     } else if (score > 40) {
       return "yellow.500";
-    } else {
-      return "red.500";
     }
+
+    return "red.600";
   };
 
   return (
@@ -46,7 +44,7 @@ function MentalHealthScoreCard() {
       <Box
         bg="white"
         px={8}
-        py={10}
+        py={6}
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"

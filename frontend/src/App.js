@@ -6,6 +6,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import MentalHealthScoreCard from "./components/MentalHealthScoreCard";
+import TrendsCard from "./components/TrendsCard";
 
 function App() {
   return (
@@ -25,7 +26,9 @@ function App() {
             <GridItem colSpan={5}>
               <MentalHealthScoreCard />
             </GridItem>
-            <GridItem colSpan={2} bg="papayawhip" />
+            <GridItem colSpan={3}>
+              <TrendsCard />
+            </GridItem>
             <GridItem colSpan={4} bg="tomato" />
           </Grid>
         </Container>
