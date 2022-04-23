@@ -16,12 +16,17 @@ class ScoreView(ListAPIView):
     filter_class = ScoreboardFilter
 
     def get_queryset(self):
+        queryset = MentalHealthScoreboard.objects.filter().select_related("user")
+
+        if self.request.GET.get("timeline"):
+            queryset = MentalHealthScoreboard.objects.for_timeline(
+                self.request.GET.get("timeline")
+            )
+
         if self.request.GET.get("team"):
             users = User.objects.filter(teams=self.request.GET["team"])
-            return MentalHealthScoreboard.objects.filter(user__in=users).select_related(
-                "user"
-            )
-        return MentalHealthScoreboard.objects.all().select_related("user")
+            return queryset.filter(user__in=users)
+        return queryset
 
 
 class TeamsListView(ListAPIView):
