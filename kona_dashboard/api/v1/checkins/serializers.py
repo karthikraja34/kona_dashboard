@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from kona_dashboard.checkins.models import MentalHealthScoreboard, Team
+from kona_dashboard.checkins.models import DailyCheckIn, MentalHealthScoreboard, Team
 
 User = get_user_model()
 
@@ -24,3 +24,12 @@ class TeamsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = ["id", "name"]
+
+
+class DailyCheckInSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    color = serializers.CharField(source="get_color_display")
+
+    class Meta:
+        model = DailyCheckIn
+        fields = ["user", "elaboration", "color", "elaboration", "emotion", "created"]

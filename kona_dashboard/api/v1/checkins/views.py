@@ -1,12 +1,16 @@
+from datetime import datetime, timedelta
+
+from django.db.models import Avg
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import ListAPIView
 
 from kona_dashboard.api.v1.checkins.filters import ScoreboardFilter
 from kona_dashboard.api.v1.checkins.serializers import (
+    DailyCheckInSerializer,
     ScoreboardSerializer,
     TeamsSerializer,
 )
-from kona_dashboard.checkins.models import MentalHealthScoreboard, Team
+from kona_dashboard.checkins.models import DailyCheckIn, MentalHealthScoreboard, Team
 from kona_dashboard.users.models import User
 
 
@@ -32,3 +36,27 @@ class ScoreView(ListAPIView):
 class TeamsListView(ListAPIView):
     serializer_class = TeamsSerializer
     queryset = Team.objects.all()
+
+
+class TrendsListView(ListAPIView):
+    serializer_class = DailyCheckInSerializer
+
+    def get_queryset(self):
+        past_three_days_checkin_ids = (
+            DailyCheckIn.objects.filter(created__gte=datetime.now() - timedelta(days=3))
+            .distinct("user")
+            .values_list("id", flat=True)
+        )
+        user_ids = (
+            DailyCheckIn.objects.filter(id__in=past_three_days_checkin_ids)
+            .values("user")
+            .annotate(Avg("health_score"))
+            .order_by()
+            .filter(health_score__avg__lte=50)
+            .values_list("user_id", flat=True)
+        )
+        return (
+            DailyCheckIn.objects.filter(user_id__in=user_ids)
+            .order_by("user", "-created")
+            .distinct("user")
+        )
