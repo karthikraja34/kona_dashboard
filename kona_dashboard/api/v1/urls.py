@@ -1,11 +1,8 @@
-from django.urls import include, path
+from django.urls import path
+
+from .checkins.views import ScoreView, TeamsListView
 
 urlpatterns = [
-    path(
-        "checkins/",
-        include(
-            ("kona_dashboard.api.v1.checkins.urls", "kona_dashboard.api.v1.checkins"),
-            namespace="checkins",
-        ),
-    ),
+    path("scores/", ScoreView.as_view()),
+    path("teams/", TeamsListView.as_view()),
 ]
