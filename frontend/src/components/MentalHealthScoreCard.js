@@ -86,14 +86,14 @@ function MentalHealthScoreCard() {
           <Stack direction="row" overflowX={"scroll"}>
             {scoresResponse &&
               scoresResponse.results.map((scoreData) => (
-                <Box textAlign="center" padding={3}>
+                <Box textAlign="center" padding={4}>
                   <CircularProgress
                     color={getBorderColor(scoreData.score)}
-                    size="70px"
+                    size="120px"
                     value={scoreData.score}
                   >
                     <CircularProgressLabel>
-                      <Avatar name={scoreData.user.username} />
+                      <Avatar size="xl" name={scoreData.user.username} />
                     </CircularProgressLabel>
                   </CircularProgress>
                   <h4 className="text-gray-500 font-semibold text-sm mt-2">
