@@ -185,7 +185,7 @@ class MentalHealthScoreboard(models.Model):
     objects = MentalHealthScoreboardManager()
 
     class Meta:
-        ordering = ("-score", "-date_from")
+        ordering = ("score", "-date_from")
         unique_together = (("user", "date_from", "category"),)
 
     def add_checkin(self, checkin):
