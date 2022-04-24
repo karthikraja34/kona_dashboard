@@ -6,10 +6,12 @@ import {
   Select,
   Stack,
   Avatar,
+  Text,
   CircularProgress,
   CircularProgressLabel,
 } from "@chakra-ui/react";
 import useFetch from "../hooks/useFetch";
+import EmptyIcon from "../assets/bored.png";
 
 function MentalHealthScoreCard() {
   const [timeline, setTimeline] = useState("today");
@@ -81,6 +83,20 @@ function MentalHealthScoreCard() {
         </Flex>
 
         <Flex marginTop={10}>
+          {scoresResponse && !scoresResponse.results.length && (
+            <Box
+              w="full"
+              alignItems="center"
+              flexDirection="column"
+              display="flex"
+              marginBottom={10}
+            >
+              <img src={EmptyIcon} alt="No data" />
+              <Text color="gray.500" fontWeight="semibold" fontSize="xl">
+                Seems no checkins yet available!!!
+              </Text>
+            </Box>
+          )}
           <Stack direction="row" overflowX={"scroll"}>
             {scoresResponse &&
               scoresResponse.results.map((scoreData) => (
