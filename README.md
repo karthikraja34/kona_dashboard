@@ -7,48 +7,30 @@ An emotional welfare dashboard for companies
 
 License: MIT
 
-## Settings
+## Setting up the project
+### Create virtualenv with python3
+- `python3.9 -m venv <virtual env path>`
+- `source <virtual env path>/bin/activate`
 
-Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings.html).
+### Install Requirements
+- `cd <project_root_directory>`
+- `pip install -r requirements/base.txt`
 
-## Basic Commands
+### Database setup
+- Install Postgres
+- `createdb --username=<username> <project_name>`
 
-### Setting Up Your Users
+### Database table creations\
+- Set database in Environment
+  - export DATABASE_URL=postgres://<username>:<password>@127.0.0.1:5432/<DB name given to createdb>
+- `cd <project_root_directory>`
+- `./manage.py migrate`
 
--   To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+### Running Backend
+- Once the above steps are done, then server can be started anytime by running
+- `./manage.py runserver`
 
--   To create a **superuser account**, use this command:
-
-        $ python manage.py createsuperuser
-
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
-
-### Type checks
-
-Running type checks with mypy:
-
-    $ mypy kona_dashboard
-
-### Test coverage
-
-To run the tests, check your test coverage, and generate an HTML coverage report:
-
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
-
-#### Running tests with pytest
-
-    $ pytest
-
-### Live reloading and Sass CSS compilation
-
-Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally.html#sass-compilation-live-reloading).
-
-## Deployment
-
-The following details how to deploy this application.
-
-### Heroku
-
-See detailed [cookiecutter-django Heroku documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-on-heroku.html).
+### Frontend
+- `cd frontend`
+- `npm i`
+- `npm start`
