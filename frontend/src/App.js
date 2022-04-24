@@ -5,6 +5,7 @@ import {
   GridItem,
   useColorModeValue,
 } from "@chakra-ui/react";
+import AnalyticsCard from "./components/AnalyticsCard";
 import MentalHealthScoreCard from "./components/MentalHealthScoreCard";
 import TrendsCard from "./components/TrendsCard";
 
@@ -19,17 +20,19 @@ function App() {
       >
         <Container maxW="container.xl">
           <Grid
-            templateRows="repeat(2, 1fr)"
-            templateColumns="repeat(5, 1fr)"
+            templateRows="repeat(1, 1fr)"
+            templateColumns="repeat(6, 1fr)"
             gap={4}
           >
-            <GridItem colSpan={5}>
+            <GridItem colSpan={6}>
               <MentalHealthScoreCard />
             </GridItem>
             <GridItem colSpan={3}>
               <TrendsCard />
             </GridItem>
-            <GridItem colSpan={4} bg="tomato" />
+            <GridItem colSpan={3}>
+              <AnalyticsCard />
+            </GridItem>
           </Grid>
         </Container>
       </Box>
