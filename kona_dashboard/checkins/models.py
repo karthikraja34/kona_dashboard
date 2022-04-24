@@ -58,9 +58,6 @@ class ScoreboardDateHelperMixin(object):
             1,
         )
 
-    def today_date(self):
-        return timezone.localtime(now()).date()
-
     def today(self):
         return timezone.localtime(now()).date(), MentalHealthScoreboard.DAILY_SCORE
 
@@ -112,28 +109,52 @@ class MentalHealthScoreboardManager(ScoreboardDateHelperMixin, models.Manager):
         )
 
     def update_daily(self, checkin):
-        date_from, category = self.today()
+        date_from, category = checkin.created.date(), MentalHealthScoreboard.DAILY_SCORE
         scoreboard, created = self.get_or_create(
             date_from=date_from, user=checkin.user, category=category
         )
+
+        if scoreboard.checkins.filter(
+            checkin_stats__checkins__created=checkin.created,
+            checkin_stats__checkins__user=checkin.user,
+        ).exists():
+            return
         scoreboard.add_checkin(checkin)
 
     def update_weekly(self, checkin):
-        this_month_start_date = self.this_month_start_date()
+        this_week_start_date = checkin.created.date() - timedelta(
+            days=(checkin.created.date().weekday()) % 7
+        )
         scoreboard, created = self.get_or_create(
-            date_from=this_month_start_date,
+            date_from=this_week_start_date,
             user=checkin.user,
             category=MentalHealthScoreboard.WEEKLY_SCORE,
         )
+
+        if scoreboard.checkins.filter(
+            checkin_stats__checkins__created=checkin.created,
+            checkin_stats__checkins__user=checkin.user,
+        ).exists():
+            return
         scoreboard.add_checkin(checkin)
 
     def update_monthly(self, checkin):
-        this_month_start_date = self.this_month_start_date()
+        this_month_start_date = date(
+            checkin.created.date().year,
+            checkin.created.date().month,
+            1,
+        )
         scoreboard, created = self.get_or_create(
             date_from=this_month_start_date,
             user=checkin.user,
             category=MentalHealthScoreboard.MONTHLY_SCORE,
         )
+
+        if scoreboard.checkins.filter(
+            checkin_stats__checkins__created=checkin.created,
+            checkin_stats__checkins__user=checkin.user,
+        ).exists():
+            return
         scoreboard.add_checkin(checkin)
 
     def add_checkin(self, checkin):
