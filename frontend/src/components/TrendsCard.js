@@ -6,8 +6,8 @@ import {
   Avatar,
   Stack,
   Tooltip,
-  SkeletonCircle,
   Skeleton,
+  Spinner,
 } from "@chakra-ui/react";
 import React from "react";
 import useFetch from "../hooks/useFetch";
@@ -23,6 +23,7 @@ function TrendsCard() {
         bg="white"
         px={8}
         py={6}
+        minH={350}
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
@@ -37,33 +38,41 @@ function TrendsCard() {
           avatar to see their last checkin.
         </Text>
 
-        <Skeleton isLoaded={!loading}>
-          <Flex marginTop={6}>
-            <Stack direction="row" overflowX={"scroll"}>
-              {response &&
-                response.results.map((checkin) => (
-                  <Box textAlign="center" padding={4}>
-                    <Tooltip
-                      label={
-                        checkin.elaboration ? checkin.elaboration : "No data"
-                      }
-                    >
-                      <Avatar size="xl" name={checkin.user.username} />
-                    </Tooltip>
-                    <Tooltip
-                      label={
-                        checkin.elaboration ? checkin.elaboration : "No data"
-                      }
-                    >
-                      <h4 className="text-gray-500 font-semibold text-sm mt-2">
-                        {checkin.user.username}
-                      </h4>
-                    </Tooltip>
-                  </Box>
-                ))}
-            </Stack>
-          </Flex>
-        </Skeleton>
+        <Flex marginTop={6} justifyContent="center">
+          {loading && (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              marginY={10}
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          )}
+          <Stack direction="row" overflowX={"scroll"}>
+            {response &&
+              response.results.map((checkin) => (
+                <Box textAlign="center" padding={4}>
+                  <Tooltip
+                    label={
+                      checkin.elaboration ? checkin.elaboration : "No data"
+                    }
+                  >
+                    <Avatar size="xl" name={checkin.user.username} />
+                  </Tooltip>
+                  <Tooltip
+                    label={
+                      checkin.elaboration ? checkin.elaboration : "No data"
+                    }
+                  >
+                    <h4 className="text-gray-500 font-semibold text-sm mt-2">
+                      {checkin.user.username}
+                    </h4>
+                  </Tooltip>
+                </Box>
+              ))}
+          </Stack>
+        </Flex>
       </Box>
     </>
   );

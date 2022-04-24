@@ -9,6 +9,7 @@ import {
   Text,
   CircularProgress,
   CircularProgressLabel,
+  Spinner,
 } from "@chakra-ui/react";
 import useFetch from "../hooks/useFetch";
 import EmptyIcon from "../assets/bored.png";
@@ -82,8 +83,18 @@ function MentalHealthScoreCard() {
           </Box>
         </Flex>
 
-        <Flex marginTop={10}>
-          {scoresResponse && !scoresResponse.results.length && (
+        <Flex marginTop={10} justifyContent="center">
+          {loading && (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              marginY={10}
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          )}
+          {scoresResponse && !loading && !scoresResponse.results.length && (
             <Box
               w="full"
               alignItems="center"
@@ -99,6 +110,7 @@ function MentalHealthScoreCard() {
           )}
           <Stack direction="row" overflowX={"scroll"}>
             {scoresResponse &&
+              !loading &&
               scoresResponse.results.map((scoreData) => (
                 <Box textAlign="center" padding={4}>
                   <CircularProgress
