@@ -2,7 +2,9 @@ from datetime import datetime, timedelta
 
 from django.db.models import Avg
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.decorators import api_view
 from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
 
 from kona_dashboard.api.v1.checkins.filters import ScoreboardFilter
 from kona_dashboard.api.v1.checkins.serializers import (
@@ -60,3 +62,16 @@ class TrendsListView(ListAPIView):
             .order_by("user", "-created")
             .distinct("user")
         )
+
+
+@api_view(["GET"])
+def mental_health_time_analytics_view(request):
+    paginator = PageNumberPagination()
+    paginator.page_size = 200
+    queryset = MentalHealthScoreboard.objects.all()
+    _filter = ScoreboardFilter(request.GET, queryset=queryset)
+    results = (
+        _filter.qs.order_by().values("date_from").annotate(score=100 - Avg("score"))
+    )
+    paginator.paginate_queryset(results, request)
+    return paginator.get_paginated_response(results)
