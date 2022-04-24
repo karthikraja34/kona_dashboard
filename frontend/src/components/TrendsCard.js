@@ -33,10 +33,12 @@ function TrendsCard() {
             Trends
           </Heading>
         </Flex>
-        <Text color="gray.500" fontWeight="semibold" marginTop={1}>
-          These employees had burnout for past 3 days. Hover on their name or
-          avatar to see their last checkin.
-        </Text>
+        {response && response.results && (
+          <Text color="gray.500" fontWeight="semibold" marginTop={1}>
+            These employees had burnout for past 3 days. Hover on their name or
+            avatar to see their last checkin.
+          </Text>
+        )}
 
         <Flex marginTop={6} justifyContent="center">
           {loading && (
@@ -50,6 +52,21 @@ function TrendsCard() {
             />
           )}
           <Stack direction="row" overflowX={"scroll"}>
+            {response && !response.results.length && (
+              <>
+                <Box
+                  w="full"
+                  alignItems="center"
+                  flexDirection="row"
+                  display="flex"
+                  marginBottom={10}
+                >
+                  <Text color="gray.500" fontWeight="semibold" fontSize="xl">
+                    Hey there!! More trends yet to come soon
+                  </Text>
+                </Box>
+              </>
+            )}
             {response &&
               response.results.map((checkin) => (
                 <Box textAlign="center" padding={4}>
